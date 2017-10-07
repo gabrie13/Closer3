@@ -179,6 +179,8 @@
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Closer3DB.cs" />
     <Compile Include="Models\Closer3DbSetInitializer.cs" />
+    <Compile Include="Models\Employee.cs" />
+    <Compile Include="Models\EmployeeViewModel.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\Location.cs" />
     <Compile Include="Models\LocationViewModel.cs" />
