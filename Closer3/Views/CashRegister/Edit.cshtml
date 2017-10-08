@@ -1,21 +1,18 @@
-﻿@model Closer3.Models.CashRegister
+﻿@model Closer3.Models.CashRegisterViewModel
 
 @{
-    ViewBag.Title = "Edit";
+    ViewBag.Title = "Register | Edit";
 }
-
-<h2>Edit</h2>
-
 
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
     
     <div class="form-horizontal">
-        <h4>CashRegister</h4>
+        <h4 class="alert alert-warning">Register Edit</h4>
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-        @Html.HiddenFor(model => model.RegisterId)
+        @Html.HiddenFor(model => model.CashRegisterId)
 
         <div class="form-group">
             @Html.LabelFor(model => model.Cash, htmlAttributes: new { @class = "control-label col-md-2" })
@@ -78,22 +75,6 @@
             <div class="col-md-10">
                 @Html.EditorFor(model => model.Tax, new { htmlAttributes = new { @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.Tax, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.CcTotal, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.CcTotal, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.CcTotal, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.Total, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Total, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Total, "", new { @class = "text-danger" })
             </div>
         </div>
 

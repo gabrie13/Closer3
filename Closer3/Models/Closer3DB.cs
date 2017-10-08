@@ -25,7 +25,7 @@ namespace Closer3.Models
 
         public System.Data.Entity.DbSet<Closer3.Models.Employee> Employees { get; set; }
 
-        public System.Data.Entity.DbSet<Closer3.Models.CashRegister> CashRegisters { get; set; }
+        //public System.Data.Entity.DbSet<Closer3.Models.CashRegister> CashRegisters { get; set; }
     
     }
 }

@@ -9,7 +9,7 @@ namespace Closer3.Models
     public class CashRegisterViewModel
     {
         [Key]
-        public int RegisterId { get; set; }
+        public int CashRegisterId { get; set; }
 
         [DisplayFormat(DataFormatString = "{0:C0}") ]
         [DataType(DataType.Currency)]

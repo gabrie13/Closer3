@@ -10,5 +10,11 @@ namespace Closer3.Services
 {
     interface ICashRegisterService
     {
+        List<CashRegisterViewModel> GetAll();
+        CashRegisterViewModel FindById(int id);
+        CashRegisterViewModel Create(CashRegisterViewModel cashRegister);
+        CashRegisterViewModel Save(CashRegisterViewModel cashRegister);
+        void Delete(int id);
+        void Dispose();
     }
 }

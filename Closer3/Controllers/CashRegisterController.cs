@@ -7,17 +7,19 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using Closer3.Models;
+using Closer3.Services;
 
 namespace Closer3.Controllers
 {
     public class CashRegisterController : Controller
     {
         private Closer3DB db = new Closer3DB();
+        private readonly ICashRegisterService _cashreg = new CashRegisterService();
 
         // GET: CashRegister
         public ActionResult Index()
         {
-            return View(db.CashRegisters.ToList());
+            return View(_cashreg.GetAll());
         }
 
         // GET: CashRegister/Details/5
@@ -27,7 +29,7 @@ namespace Closer3.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            CashRegister cashRegister = db.CashRegisters.Find(id);
+            CashRegisterViewModel cashRegister = _cashreg.FindById(id.Value);
             if (cashRegister == null)
             {
                 return HttpNotFound();
@@ -42,16 +44,13 @@ namespace Closer3.Controllers
         }
 
         // POST: CashRegister/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "RegisterId,Cash,Check,Visa,MasterCard,Discover,Amex,GiftCard,Tax,CcTotal,Total")] CashRegister cashRegister)
+        public ActionResult Create([Bind(Include = "RegisterId,Cash,Check,Visa,MasterCard,Discover,Amex,GiftCard,Tax,CcTotal,Total")] CashRegisterViewModel cashRegister)
         {
             if (ModelState.IsValid)
             {
-                db.CashRegisters.Add(cashRegister);
-                db.SaveChanges();
+                _cashreg.Create(cashRegister);
                 return RedirectToAction("Index");
             }
 
@@ -65,7 +64,7 @@ namespace Closer3.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            CashRegister cashRegister = db.CashRegisters.Find(id);
+            CashRegisterViewModel cashRegister = _cashreg.FindById(id.Value);
             if (cashRegister == null)
             {
                 return HttpNotFound();
@@ -74,16 +73,13 @@ namespace Closer3.Controllers
         }
 
         // POST: CashRegister/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "RegisterId,Cash,Check,Visa,MasterCard,Discover,Amex,GiftCard,Tax,CcTotal,Total")] CashRegister cashRegister)
+        public ActionResult Edit([Bind(Include = "RegisterId,Cash,Check,Visa,MasterCard,Discover,Amex,GiftCard,Tax,CcTotal,Total")] CashRegisterViewModel cashRegister)
         {
             if (ModelState.IsValid)
             {
-                db.Entry(cashRegister).State = EntityState.Modified;
-                db.SaveChanges();
+                _cashreg.Save(cashRegister);
                 return RedirectToAction("Index");
             }
             return View(cashRegister);
@@ -96,7 +92,7 @@ namespace Closer3.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            CashRegister cashRegister = db.CashRegisters.Find(id);
+            CashRegisterViewModel cashRegister = _cashreg.FindById(id.Value);
             if (cashRegister == null)
             {
                 return HttpNotFound();
@@ -109,9 +105,7 @@ namespace Closer3.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            CashRegister cashRegister = db.CashRegisters.Find(id);
-            db.CashRegisters.Remove(cashRegister);
-            db.SaveChanges();
+            _cashreg.Delete(id);
             return RedirectToAction("Index");
         }
 
@@ -119,7 +113,7 @@ namespace Closer3.Controllers
         {
             if (disposing)
             {
-                db.Dispose();
+                _cashreg.Dispose();
             }
             base.Dispose(disposing);
         }
