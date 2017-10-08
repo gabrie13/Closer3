@@ -7,17 +7,19 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using Closer3.Models;
+using Closer3.Services;
 
 namespace Closer3.Controllers
 {
     public class LocationController : Controller
     {
         private Closer3DB db = new Closer3DB();
-
+        private readonly ILocationService _locationService = new LocationService();
+        
         // GET: Location
         public ActionResult Index()
         {
-            return View(db.Locations.ToList());
+            return View(_locationService.GetAll());
         }
 
         // GET: Location/Details/5
@@ -27,7 +29,7 @@ namespace Closer3.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Location location = db.Locations.Find(id);
+            LocationViewModel location = _locationService.FindById(id.Value);
             if (location == null)
             {
                 return HttpNotFound();
@@ -42,16 +44,13 @@ namespace Closer3.Controllers
         }
 
         // POST: Location/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "LocationId,LocationName,Address,City,State,ZipCode,PhoneNumber,Email")] Location location)
+        public ActionResult Create([Bind(Include = "LocationId,LocationName,Address,City,State,ZipCode,PhoneNumber,Email")] LocationViewModel location)
         {
             if (ModelState.IsValid)
             {
-                db.Locations.Add(location);
-                db.SaveChanges();
+                _locationService.Create(location);
                 return RedirectToAction("Index");
             }
 
@@ -65,7 +64,7 @@ namespace Closer3.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Location location = db.Locations.Find(id);
+            LocationViewModel location = _locationService.FindById(id.Value);
             if (location == null)
             {
                 return HttpNotFound();
@@ -74,16 +73,13 @@ namespace Closer3.Controllers
         }
 
         // POST: Location/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "LocationId,LocationName,Address,City,State,ZipCode,PhoneNumber,Email")] Location location)
+        public ActionResult Edit([Bind(Include = "LocationId,LocationName,Address,City,State,ZipCode,PhoneNumber,Email")] LocationViewModel location)
         {
             if (ModelState.IsValid)
             {
-                db.Entry(location).State = EntityState.Modified;
-                db.SaveChanges();
+                _locationService.Save(location);
                 return RedirectToAction("Index");
             }
             return View(location);
@@ -96,7 +92,7 @@ namespace Closer3.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Location location = db.Locations.Find(id);
+            LocationViewModel location = _locationService.FindById(id.Value);
             if (location == null)
             {
                 return HttpNotFound();
@@ -109,9 +105,7 @@ namespace Closer3.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            Location location = db.Locations.Find(id);
-            db.Locations.Remove(location);
-            db.SaveChanges();
+            _locationService.Delete(id);
             return RedirectToAction("Index");
         }
 
@@ -119,7 +113,7 @@ namespace Closer3.Controllers
         {
             if (disposing)
             {
-                db.Dispose();
+                _locationService.Dispose();
             }
             base.Dispose(disposing);
         }
