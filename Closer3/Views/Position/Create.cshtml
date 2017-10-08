@@ -1,16 +1,15 @@
-﻿@model Closer3.Models.PositionViewModel
+﻿@model Closer3.Models.Position
 
 @{
     ViewBag.Title = "Position | Create";
 }
-
 
 @using (Html.BeginForm()) 
 {
     @Html.AntiForgeryToken()
     
     <div class="form-horizontal">
-        <h4 class="alert alert-info">Position</h4>
+        <h4 class="alert alert-info">Add New Position</h4>
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         <div class="form-group">
