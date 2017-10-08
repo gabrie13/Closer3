@@ -13,13 +13,8 @@ namespace Closer3.Controllers
 {
     public class EmployeeController : Controller
     {
-        // CONNECTION TO THE DATABASE
         private Closer3DB db = new Closer3DB();
-
-        // CONNECTION TO THE SERVICES : EMPLOYEE, POSITION, LOCATION
         private readonly IEmployeeService _employeeService = new EmployeeService();
-        private readonly IPositionService _positionService = new PositionService();
-        private readonly ILocationService _locationService = new LocationService();
 
         // GET: Employee
         public ActionResult Index()
@@ -51,12 +46,11 @@ namespace Closer3.Controllers
         // POST: Employee/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "EmployeeId,PositionId,LocationId,FirstName,LastName,Phone,Email,DateOfHire,Wage")] Employee employee)
+        public ActionResult Create([Bind(Include = "EmployeeId,FirstName,LastName,Phone,Email,DateOfHire,Wage")] EmployeeViewModel employee)
         {
             if (ModelState.IsValid)
             {
-                db.Employees.Add(employee);
-                db.SaveChanges();
+                _employeeService.Create(employee);
                 return RedirectToAction("Index");
             }
 
@@ -70,7 +64,7 @@ namespace Closer3.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Employee employee = db.Employees.Find(id);
+            EmployeeViewModel employee = _employeeService.FindById(id.Value);
             if (employee == null)
             {
                 return HttpNotFound();
@@ -81,12 +75,11 @@ namespace Closer3.Controllers
         // POST: Employee/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "EmployeeId,PositionId,LocationId,FirstName,LastName,Phone,Email,DateOfHire,Wage")] Employee employee)
+        public ActionResult Edit([Bind(Include = "EmployeeId,FirstName,LastName,Phone,Email,DateOfHire,Wage")] EmployeeViewModel employee)
         {
             if (ModelState.IsValid)
             {
-                db.Entry(employee).State = EntityState.Modified;
-                db.SaveChanges();
+                _employeeService.Save(employee);
                 return RedirectToAction("Index");
             }
             return View(employee);

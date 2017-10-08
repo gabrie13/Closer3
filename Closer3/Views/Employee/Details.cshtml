@@ -1,45 +1,19 @@
-﻿@model Closer3.Models.Employee
+﻿@model Closer3.Models.EmployeeViewModel
 
 @{
     ViewBag.Title = "Details";
 }
 
-<h2>Details</h2>
-
 <div>
-    <h4>Employee</h4>
+    <h4 class="alert alert-info">Employee Details</h4>
     <hr />
     <dl class="dl-horizontal">
         <dt>
-            @Html.DisplayNameFor(model => model.PositionId)
+            @Html.DisplayNameFor(model => model.Name)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.PositionId)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.LocationId)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.LocationId)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.FirstName)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.FirstName)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.LastName)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.LastName)
+            @Html.DisplayFor(model => model.Name)
         </dd>
 
         <dt>
