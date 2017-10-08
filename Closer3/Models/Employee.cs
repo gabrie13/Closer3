@@ -26,5 +26,9 @@ namespace Closer3.Models
         public DateTime DateOfHire { get; set; }
 
         public decimal Wage { get; set; }
+
+        // LAZY LOADING DROP DOWN LIST : POSITION, LOCATION
+        public virtual Position Position { get; set; }
+        public virtual Location Location { get; set; }
     }
 }

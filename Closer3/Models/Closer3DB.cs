@@ -22,6 +22,8 @@ namespace Closer3.Models
         public System.Data.Entity.DbSet<Closer3.Models.Position> Positions { get; set; }
 
         public System.Data.Entity.DbSet<Closer3.Models.Location> Locations { get; set; }
+
+        public System.Data.Entity.DbSet<Closer3.Models.Employee> Employees { get; set; }
     
     }
 }
