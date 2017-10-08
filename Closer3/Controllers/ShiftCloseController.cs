@@ -7,105 +7,111 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using Closer3.Models;
-using Closer3.Services;
 
 namespace Closer3.Controllers
 {
-    public class CashRegisterController : Controller
+    public class ShiftCloseController : Controller
     {
         private Closer3DB db = new Closer3DB();
-        private readonly ICashRegisterService _cashreg = new CashRegisterService();
 
-        // GET: CashRegister
+        // GET: ShiftClose
         public ActionResult Index()
         {
-            return View(_cashreg.GetAll());
+            return View(db.CashRegs.ToList());
         }
 
-        // GET: CashRegister/Details/5
+        // GET: ShiftClose/Details/5
         public ActionResult Details(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            CashRegisterViewModel cashRegister = _cashreg.FindById(id.Value);
-            if (cashRegister == null)
+            CashReg cashReg = db.CashRegs.Find(id);
+            if (cashReg == null)
             {
                 return HttpNotFound();
             }
-            return View(cashRegister);
+            return View(cashReg);
         }
 
-        // GET: CashRegister/Create
+        // GET: ShiftClose/Create
         public ActionResult Create()
         {
             return View();
         }
 
-        // POST: CashRegister/Create
+        // POST: ShiftClose/Create
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "RegisterId,Cash,Check,Visa,MasterCard,Discover,Amex,GiftCard,Tax,CcTotal,Total")] CashRegisterViewModel cashRegister)
+        public ActionResult Create([Bind(Include = "CashRegisterId,Cash,Check,Visa,MasterCard,Discover,Amex,GiftCard,Tax,CcTotal,Total")] CashReg cashReg)
         {
             if (ModelState.IsValid)
             {
-                _cashreg.Create(cashRegister);
+                db.CashRegs.Add(cashReg);
+                db.SaveChanges();
                 return RedirectToAction("Index");
             }
 
-            return View(cashRegister);
+            return View(cashReg);
         }
 
-        // GET: CashRegister/Edit/5
+        // GET: ShiftClose/Edit/5
         public ActionResult Edit(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            CashRegisterViewModel cashRegister = _cashreg.FindById(id.Value);
-            if (cashRegister == null)
+            CashReg cashReg = db.CashRegs.Find(id);
+            if (cashReg == null)
             {
                 return HttpNotFound();
             }
-            return View(cashRegister);
+            return View(cashReg);
         }
 
-        // POST: CashRegister/Edit/5
+        // POST: ShiftClose/Edit/5
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "RegisterId,Cash,Check,Visa,MasterCard,Discover,Amex,GiftCard,Tax,CcTotal,Total")] CashRegisterViewModel cashRegister)
+        public ActionResult Edit([Bind(Include = "CashRegisterId,Cash,Check,Visa,MasterCard,Discover,Amex,GiftCard,Tax,CcTotal,Total")] CashReg cashReg)
         {
             if (ModelState.IsValid)
             {
-                _cashreg.Save(cashRegister);
+                db.Entry(cashReg).State = EntityState.Modified;
+                db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            return View(cashRegister);
+            return View(cashReg);
         }
 
-        // GET: CashRegister/Delete/5
+        // GET: ShiftClose/Delete/5
         public ActionResult Delete(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            CashRegisterViewModel cashRegister = _cashreg.FindById(id.Value);
-            if (cashRegister == null)
+            CashReg cashReg = db.CashRegs.Find(id);
+            if (cashReg == null)
             {
                 return HttpNotFound();
             }
-            return View(cashRegister);
+            return View(cashReg);
         }
 
-        // POST: CashRegister/Delete/5
+        // POST: ShiftClose/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            _cashreg.Delete(id);
+            CashReg cashReg = db.CashRegs.Find(id);
+            db.CashRegs.Remove(cashReg);
+            db.SaveChanges();
             return RedirectToAction("Index");
         }
 
@@ -113,7 +119,7 @@ namespace Closer3.Controllers
         {
             if (disposing)
             {
-                _cashreg.Dispose();
+                db.Dispose();
             }
             base.Dispose(disposing);
         }

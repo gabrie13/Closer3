@@ -1,7 +1,7 @@
-﻿@model IEnumerable<Closer3.Models.CashRegisterViewModel>
+﻿@model IEnumerable<Closer3.Models.CashReg>
 
 @{
-    ViewBag.Title = "Cash Register";
+    ViewBag.Title = "Register";
 }
 
 <p>
@@ -39,7 +39,7 @@
                     @Html.DisplayFor(modelItem => item.Cash)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Check)
+                    @Html.DisplayNameFor(model => model.Check)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.GiftCard)
@@ -54,9 +54,9 @@
                     @Html.DisplayFor(modelItem => item.Total)
                 </td>
                 <td>
-                    @Html.ActionLink("Edit", "Edit", new { id = item.RegisterId }) |
-                    @Html.ActionLink("Details", "Details", new { id = item.RegisterId }) |
-                    @Html.ActionLink("Delete", "Delete", new { id = item.RegisterId })
+                    @Html.ActionLink("Edit", "Edit", new { id = item.CashRegisterId }) |
+                    @Html.ActionLink("Details", "Details", new { id = item.CashRegisterId }) |
+                    @Html.ActionLink("Delete", "Delete", new { id = item.CashRegisterId })
                 </td>
             </tr>
         </tbody>
