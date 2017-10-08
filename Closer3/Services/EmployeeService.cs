@@ -21,15 +21,13 @@ namespace Closer3.Services
         {
             return new EmployeeViewModel
             {
-                EmployeeId  = emp.LocationId,
+                EmployeeId  = emp.EmployeeId,
                 FirstName   = emp.FirstName,
                 LastName    = emp.LastName,
                 Phone       = emp.Phone,
                 DateOfHire  = emp.DateOfHire,
                 Email       = emp.Email,
-                Wage        = emp.Wage,
-                LocationId  = emp.LocationId,
-                PositionId  = emp.PositionId
+                Wage        = emp.Wage
             };
         }
 
@@ -48,23 +46,29 @@ namespace Closer3.Services
             return EmpDto(emp);
         }
 
-        private static Employee fromEmp(EmployeeViewModel employe)
+        private static Employee fromEmp(EmployeeViewModel employee)
         {
             var emp = new Employee
             {
-                EmployeeId   = employe.LocationId,
-                FirstName    = employe.FirstName,
-                LastName     = employe.LastName,
-                Phone        = employe.Phone,
-                DateOfHire   = employe.DateOfHire,
-                Email        = employe.Email,
-                Wage         = employe.Wage,
-                LocationId   = employe.LocationId,
-                PositionId   = employe.PositionId
+                EmployeeId  = employee.EmployeeId,
+                FirstName   = employee.FirstName,
+                LastName    = employee.LastName,
+                Phone       = employee.Phone,
+                DateOfHire  = employee.DateOfHire,
+                Email       = employee.Email,
+                Wage        = employee.Wage
             };
             return emp;
         }
 
+        public EmployeeViewModel Save(EmployeeViewModel employee)
+        {
+            var emp = fromEmp(employee);
+            db.Entry(emp).State = EntityState.Modified;
+            db.SaveChanges();
+
+            return EmpDto(emp);
+        }
         public void Delete(int id)
         {
             Employee employee = db.Employees.Find(id);

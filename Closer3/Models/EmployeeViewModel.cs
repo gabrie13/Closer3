@@ -11,10 +11,6 @@ namespace Closer3.Models
         [Key]
         public int EmployeeId { get; set; }
 
-        public int PositionId { get; set; }
-
-        public int LocationId { get; set; }
-
         [Display(Name = "First Name")]
         public string FirstName { get; set; }
 
@@ -41,8 +37,5 @@ namespace Closer3.Models
 
         [DataType(DataType.Currency)]
         public decimal Wage { get; set; }
-
-        public virtual Position Position { get; set; }
-        public virtual Location Location { get; set; }
     }
 }
