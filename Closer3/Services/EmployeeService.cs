@@ -69,6 +69,7 @@ namespace Closer3.Services
 
             return EmpDto(emp);
         }
+        
         public void Delete(int id)
         {
             Employee employee = db.Employees.Find(id);

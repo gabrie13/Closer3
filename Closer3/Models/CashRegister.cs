@@ -9,7 +9,7 @@ namespace Closer3.Models
     public class CashRegister
     {
         [Key]
-        public int RegisterId { get; set; }
+        public int CashRegisterId { get; set; }
 
         public decimal Cash { get; set; }
 
