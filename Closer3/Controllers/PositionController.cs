@@ -7,51 +7,52 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using Closer3.Models;
+using Closer3.Services;
 
 namespace Closer3.Controllers
 {
     public class PositionController : Controller
     {
         private Closer3DB db = new Closer3DB();
+        private readonly IPositionService _positionService = new PositionService();
 
         // GET: Position
         public ActionResult Index()
         {
-            return View(db.Positions.ToList());
+            return View(_positionService.GetAll());
         }
-
+        /// COMMENTED OUT BECAUSE THE VIEW IS "EXCLUDED" FROM THE PROJECT
+        /// THERE IS NO NEED FOR A DETAILS VIEW WITH ONLY A TITLE ASSOCIATED WITH THIS ENTITY
         // GET: Position/Details/5
-        public ActionResult Details(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Position position = db.Positions.Find(id);
-            if (position == null)
-            {
-                return HttpNotFound();
-            }
-            return View(position);
-        }
+        //public ActionResult Details(int? id)
+        //{
+        //    if (id == null)
+        //    {
+        //        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+        //    }
+        //    PositionViewModel position = _positionService.FindById(id.Value);
+        //    if (position == null)
+        //    {
+        //        return HttpNotFound();
+        //    }
+        //    return View(position);
+        //}
 
         // GET: Position/Create
+
         public ActionResult Create()
         {
             return View();
         }
 
         // POST: Position/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "PositionId,PositionTitle")] Position position)
+        public ActionResult Create([Bind(Include = "PositionId,PositionTitle")] PositionViewModel position)
         {
             if (ModelState.IsValid)
             {
-                db.Positions.Add(position);
-                db.SaveChanges();
+                _positionService.Create(position);
                 return RedirectToAction("Index");
             }
 
@@ -65,7 +66,7 @@ namespace Closer3.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Position position = db.Positions.Find(id);
+            PositionViewModel position = _positionService.FindById(id.Value);
             if (position == null)
             {
                 return HttpNotFound();
@@ -74,16 +75,13 @@ namespace Closer3.Controllers
         }
 
         // POST: Position/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "PositionId,PositionTitle")] Position position)
+        public ActionResult Edit([Bind(Include = "PositionId,PositionTitle")] PositionViewModel position)
         {
             if (ModelState.IsValid)
             {
-                db.Entry(position).State = EntityState.Modified;
-                db.SaveChanges();
+                _positionService.Save(position);
                 return RedirectToAction("Index");
             }
             return View(position);
@@ -96,7 +94,7 @@ namespace Closer3.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Position position = db.Positions.Find(id);
+            PositionViewModel position = _positionService.FindById(id.Value);
             if (position == null)
             {
                 return HttpNotFound();
@@ -109,9 +107,8 @@ namespace Closer3.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            Position position = db.Positions.Find(id);
-            db.Positions.Remove(position);
-            db.SaveChanges();
+
+            _positionService.Delete(id);
             return RedirectToAction("Index");
         }
 
@@ -119,7 +116,7 @@ namespace Closer3.Controllers
         {
             if (disposing)
             {
-                db.Dispose();
+                _positionService.Dispose();
             }
             base.Dispose(disposing);
         }
