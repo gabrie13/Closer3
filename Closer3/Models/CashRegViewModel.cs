@@ -25,6 +25,7 @@ namespace Closer3.Models
 
         [DisplayFormat(DataFormatString = "{0:c}")]
         [DataType(DataType.Currency)]
+        [Display(Name = "Mastercard")]
         public decimal MasterCard { get; set; }
 
         [DisplayFormat(DataFormatString = "{0:c}")]

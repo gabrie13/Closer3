@@ -7,17 +7,19 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using Closer3.Models;
+using Closer3.Services;
 
 namespace Closer3.Controllers
 {
     public class CloseTillController : Controller
     {
         private Closer3DB db = new Closer3DB();
+        private ICashRegService _cashReg = new CashRegService();
 
         // GET: CloseTill
         public ActionResult Index()
         {
-            return View(db.CashRegs.ToList());
+            return View(_cashReg.GetAll());
         }
 
         // GET: CloseTill/Details/5
@@ -27,7 +29,7 @@ namespace Closer3.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            CashReg cashReg = db.CashRegs.Find(id);
+            CashRegViewModel cashReg = _cashReg.FindById(id.Value);
             if (cashReg == null)
             {
                 return HttpNotFound();
@@ -42,16 +44,13 @@ namespace Closer3.Controllers
         }
 
         // POST: CloseTill/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "CashRegisterId,Cash,Check,Visa,MasterCard,Discover,Amex,GiftCard,Tax")] CashReg cashReg)
+        public ActionResult Create([Bind(Include = "CashRegisterId,Cash,Check,Visa,MasterCard,Discover,Amex,GiftCard,Tax")] CashRegViewModel cashReg)
         {
             if (ModelState.IsValid)
             {
-                db.CashRegs.Add(cashReg);
-                db.SaveChanges();
+                _cashReg.Create(cashReg);
                 return RedirectToAction("Index");
             }
 
@@ -65,7 +64,7 @@ namespace Closer3.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            CashReg cashReg = db.CashRegs.Find(id);
+            CashRegViewModel cashReg = _cashReg.FindById(id.Value);
             if (cashReg == null)
             {
                 return HttpNotFound();
@@ -74,16 +73,13 @@ namespace Closer3.Controllers
         }
 
         // POST: CloseTill/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "CashRegisterId,Cash,Check,Visa,MasterCard,Discover,Amex,GiftCard,Tax")] CashReg cashReg)
+        public ActionResult Edit([Bind(Include = "CashRegisterId,Cash,Check,Visa,MasterCard,Discover,Amex,GiftCard,Tax")] CashRegViewModel cashReg)
         {
             if (ModelState.IsValid)
             {
-                db.Entry(cashReg).State = EntityState.Modified;
-                db.SaveChanges();
+                _cashReg.Save(cashReg);
                 return RedirectToAction("Index");
             }
             return View(cashReg);
@@ -96,7 +92,7 @@ namespace Closer3.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            CashReg cashReg = db.CashRegs.Find(id);
+            CashRegViewModel cashReg = _cashReg.FindById(id.Value);
             if (cashReg == null)
             {
                 return HttpNotFound();
@@ -109,9 +105,7 @@ namespace Closer3.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            CashReg cashReg = db.CashRegs.Find(id);
-            db.CashRegs.Remove(cashReg);
-            db.SaveChanges();
+            _cashReg.Delete(id);
             return RedirectToAction("Index");
         }
 
@@ -119,7 +113,7 @@ namespace Closer3.Controllers
         {
             if (disposing)
             {
-                db.Dispose();
+                _cashReg.Dispose();
             }
             base.Dispose(disposing);
         }
