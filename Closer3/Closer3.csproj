@@ -169,6 +169,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\CloseTillController.cs" />
     <Compile Include="Controllers\EmployeeController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\LocationController.cs" />
@@ -178,6 +179,8 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\AccountViewModels.cs" />
+    <Compile Include="Models\CashReg.cs" />
+    <Compile Include="Models\CashRegViewModel.cs" />
     <Compile Include="Models\Closer3DB.cs" />
     <Compile Include="Models\Closer3DbSetInitializer.cs" />
     <Compile Include="Models\Employee.cs" />
@@ -194,7 +197,9 @@
     <Compile Include="obj\Debug\TemporaryGeneratedFile_5937a670-0e60-4077-877b-f7221da3dda1.cs" />
     <Compile Include="obj\Debug\TemporaryGeneratedFile_E7A71F73-0F8D-4B9B-B56E-8E70B10BC5D3.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\CashRegService.cs" />
     <Compile Include="Services\EmployeeService.cs" />
+    <Compile Include="Services\ICashRegService.cs" />
     <Compile Include="Services\IEmployeeService.cs" />
     <Compile Include="Services\ILocationService.cs" />
     <Compile Include="Services\IPositionService.cs" />
@@ -260,11 +265,7 @@
     <Content Include="Content\bootstrap-theme.css.map" />
     <Content Include="Content\bootstrap.min.css.map" />
     <Content Include="Content\bootstrap.css.map" />
-    <Content Include="obj\Debug\DesignTimeResolveAssemblyReferencesInput.cache" />
     <None Include="Scripts\jquery-3.2.1.intellisense.js" />
-    <Content Include="obj\Debug\Closer3.csproj.FileListAbsolute.txt" />
-    <Content Include="obj\Debug\Closer3.dll" />
-    <Content Include="obj\Debug\Closer3.pdb" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Scripts\jquery-3.2.1.js" />
@@ -332,10 +333,14 @@
     <Content Include="Views\Employee\Details.cshtml" />
     <Content Include="Views\Employee\Edit.cshtml" />
     <Content Include="Views\Employee\Index.cshtml" />
+    <Content Include="Views\CloseTill\Create.cshtml" />
+    <Content Include="Views\CloseTill\Delete.cshtml" />
+    <Content Include="Views\CloseTill\Details.cshtml" />
+    <Content Include="Views\CloseTill\Edit.cshtml" />
+    <Content Include="Views\CloseTill\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="obj\Debug\TempPE\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
